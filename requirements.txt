@@ -1,0 +1,10 @@
+opencv-python
+ultralytics
+numpy
+pandas
+matplotlib
+inference
+supervision
+ipykernel
+ipywidgets
+pandas
