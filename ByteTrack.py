@@ -82,28 +82,29 @@ class VideoProcessor:
         annotated_frame = frame.copy()
 
 
-        labels = [f"#{tracker_id}" for tracker_id in detections.tracker_id]
+        tracker_labels = [f"#{tracker_id}" for tracker_id in detections.tracker_id]
+        name_labels = [f"#{si_name}" for si_name in detection_with_mask.data["class_name"]]
         # Drawing bbox
         annotated_frame = self.box_annotator.annotate(
-            scene=annotated_frame, detections=detections
+            scene=annotated_frame, detections=detections, labels=name_labels
         )
         # Drawing mask
         annotated_frame = self.mask_annotator.annotate(
-            scene=annotated_frame, detections=detection_with_mask
+            scene=annotated_frame, detections=detection_with_mask, 
         )
         # Assign id for object
         annotated_frame = self.label_annotator.annotate(
-            scene=annotated_frame, detections=detections, labels=labels)
+            scene=annotated_frame, detections=detections, labels=tracker_labels)
         
         return annotated_frame
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description=B"yteTrack for Surgical tools tracking"
+        description="ByteTrack for Surgical tools tracking"
     )
     parser.add_argument(
         "--model_id",
-        default="ugical-tool-iszjm/1",
+        default="surgical-tool-iszjm/1",
         help= "Roboflow model_id, is the name of pre-trained model",
         type=str
     )
@@ -186,9 +187,9 @@ python ByteTrack.py \
 --model_id sugical-tool-iszjm/1 \
 --source_video_path ../Dataset/7tools_yolov8/test_video/cropped_video_12.mp4 \
 --source_target_path ../Dataset/7tools_yolov8/test_video/ \
+--frame_rate 20 \
 --minute_start 29 \
---minute_end 32 \
---frame_rate 20
+--minute_end 32 
 # frame cua vid la 25 
 '''
 
